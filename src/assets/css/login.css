@@ -1,0 +1,537 @@
+/* ==========================================================================
+   SISTEMA WEB PARA LA GESTIÓN ADMINISTRATIVA - REFRIGERACIÓN RUFO 1, C.A.
+   Módulo: Autenticación y Control de Acceso (Login)
+   Tipografía: Geist (Google Fonts)
+   Paleta: Azul Monocromático (Principal: #04105a)
+   ========================================================================== */
+
+:root {
+  /* Paleta Azul Monocromática basada en #04105a */
+  --blue-950: #020833;
+  --blue-900: #04105a; /* Color Principal solicitado */
+  --blue-850: #071770;
+  --blue-800: #0b208a;
+  --blue-700: #1331a8;
+  --blue-600: #1e44c8;
+  --blue-500: #3360e6;
+  --blue-400: #6088f5;
+  --blue-300: #96b4fa;
+  --blue-200: #c7d9fd;
+  --blue-100: #e3ecfe;
+  --blue-50:  #f4f7ff;
+
+  /* Superficies y Fondos */
+  --bg-canvas: #f4f7ff;
+  --bg-surface: #ffffff;
+
+  /* Tipografía y Texto */
+  --text-primary: #030b3d;
+  --text-secondary: #344275;
+  --text-muted: #6472a3;
+
+  /* Bordes y Sombras */
+  --border-light: #d6e2fc;
+  --border-hover: #96b4fa;
+  --shadow-card: 0 12px 36px -6px rgba(4, 16, 90, 0.08), 0 4px 14px -2px rgba(4, 16, 90, 0.04);
+  --shadow-focus: 0 0 0 3px rgba(4, 16, 90, 0.14);
+
+  /* Estados Semánticos */
+  --status-error-bg: #fef2f2;
+  --status-error-border: #fecaca;
+  --status-error-text: #b91c1c;
+  --status-success-bg: #eff6ff;
+  --status-success-border: #bfdbfe;
+  --status-success-text: #04105a;
+
+  /* Radios y Transiciones */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --transition-fast: 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-base: 240ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Familia Tipográfica */
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ==========================================================================
+   Reset y Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  background-image:
+    radial-gradient(circle at 15% 15%, var(--blue-100) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, var(--blue-100) 0%, transparent 45%);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+button,
+input {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ==========================================================================
+   Contenedor Principal Centrado
+   ========================================================================== */
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ==========================================================================
+   Logo encima del formulario
+   ========================================================================== */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.company-logo {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   Formulario y Campos
+   ========================================================================== */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color var(--transition-fast);
+}
+
+.input-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.form-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 42px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.form-input:hover {
+  border-color: var(--border-hover);
+}
+
+.form-input:focus {
+  border-color: var(--blue-900);
+  box-shadow: var(--shadow-focus);
+}
+
+.input-wrapper:focus-within .input-icon {
+  color: var(--blue-900);
+}
+
+.form-input.input-error {
+  border-color: #ef4444;
+  background-color: #fffafa;
+}
+
+/* Botón Mostrar/Ocultar Contraseña */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.password-toggle:hover {
+  color: var(--blue-900);
+  background-color: var(--blue-50);
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Fila de Opciones (Recordarme / Olvidó Contraseña) */
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.83rem;
+  margin-top: -2px;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+}
+
+.checkbox-input {
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--border-hover);
+  border-radius: 5px;
+  background-color: var(--bg-surface);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.checkbox-input::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #ffffff;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.checkbox-input:checked {
+  background-color: var(--blue-900);
+  border-color: var(--blue-900);
+}
+
+.checkbox-input:checked::before {
+  transform: scale(1);
+}
+
+.checkbox-input:focus-visible {
+  box-shadow: var(--shadow-focus);
+}
+
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: var(--blue-700);
+  font-weight: 600;
+  font-size: 0.83rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.forgot-password-btn:hover {
+  color: var(--blue-900);
+  text-decoration: underline;
+}
+
+/* Mensajes de Alerta / Validación */
+.feedback-alert {
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.83rem;
+  line-height: 1.45;
+  animation: fadeIn 180ms ease-out;
+}
+
+.feedback-alert.show {
+  display: flex;
+}
+
+.feedback-alert svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.feedback-alert.error {
+  background-color: var(--status-error-bg);
+  border: 1px solid var(--status-error-border);
+  color: var(--status-error-text);
+}
+
+.feedback-alert.success {
+  background-color: var(--status-success-bg);
+  border: 1px solid var(--status-success-border);
+  color: var(--status-success-text);
+}
+
+/* Botón Principal de Envío (#04105a) */
+.submit-btn {
+  height: 48px;
+  width: 100%;
+  background-color: var(--blue-900);
+  color: #ffffff;
+  border: 1px solid var(--blue-900);
+  border-radius: var(--radius-md);
+  font-size: 0.94rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(4, 16, 90, 0.25);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: var(--blue-800);
+  box-shadow: 0 6px 20px rgba(4, 16, 90, 0.32);
+  transform: translateY(-1px);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.submit-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-fast);
+}
+
+.submit-btn:hover:not(:disabled) svg {
+  transform: translateX(3px);
+}
+
+/* Spinner de Carga */
+.btn-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2.2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.submit-btn.loading .btn-spinner {
+  display: inline-block;
+}
+
+.submit-btn.loading .btn-arrow {
+  display: none;
+}
+
+/* ==========================================================================
+   Modal de Política de Seguridad
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(2, 8, 51, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.security-modal {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 420px;
+  padding: 26px;
+  box-shadow: var(--shadow-card);
+  transform: translateY(10px) scale(0.98);
+  transition: transform var(--transition-base);
+}
+
+.modal-backdrop.open .security-modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: var(--blue-50);
+  border: 1px solid var(--border-light);
+  color: var(--blue-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.modal-icon-badge svg {
+  width: 22px;
+  height: 22px;
+}
+
+.modal-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.modal-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.modal-policy-box {
+  background-color: var(--blue-50);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.modal-policy-box strong {
+  color: var(--blue-900);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.modal-close-btn {
+  width: 100%;
+  height: 42px;
+  background-color: var(--blue-900);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background-color: var(--blue-800);
+}
+
+/* ==========================================================================
+   Animaciones y Responsividad
+   ========================================================================== */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 28px 20px;
+  }
+
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

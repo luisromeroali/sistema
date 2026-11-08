@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Módulo de Administrador - Sistema Web para la Gestión Administrativa de Refrigeración Rufo 1, C.A." />
+  <title>Panel de Administrador | Refrigeración Rufo 1, C.A.</title>
+
+  <!-- Tipografía Geist y Geist Mono desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Hojas de Estilo del Panel Administrador -->
+  <link rel="stylesheet" href="src/assets/css/admin.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- ======================================================================
+         SIDEBAR DE NAVEGACIÓN (#04105a)
+         ====================================================================== -->
+    <aside id="sidebar" class="sidebar" aria-label="Menú principal del administrador">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo-box">
+          <img src="src/assets/logo.jpg" alt="Logo Refrigeración Rufo" />
+        </div>
+        <div class="sidebar-system-tag">
+          <span>Gestión Administrativa</span>
+          <span class="role-chip">Administrador</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Módulos del Sistema</div>
+
+        <button type="button" class="nav-item active" data-view="dashboard">
+          <span class="nav-item-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="7" height="9" x="3" y="3" rx="1"/>
+              <rect width="7" height="5" x="14" y="3" rx="1"/>
+              <rect width="7" height="9" x="14" y="12" rx="1"/>
+              <rect width="7" height="5" x="3" y="16" rx="1"/>
+            </svg>
+            <span>Resumen General</span>
+          </span>
+        </button>
+
+        <button type="button" class="nav-item" data-view="inventario">
+          <span class="nav-item-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+              <path d="m3.3 7 8.7 5 8.7-5"/>
+              <path d="M12 22V12"/>
+            </svg>
+            <span>Gestión de Inventario</span>
+          </span>
+          <span id="navAlertBadge" class="nav-badge" title="Productos agotados o en stock mínimo">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-view="ventas">
+          <span class="nav-item-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"/>
+              <circle cx="19" cy="21" r="1"/>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+            </svg>
+            <span>Control de Ventas</span>
+          </span>
+        </button>
+
+        <button type="button" class="nav-item" data-view="proveedores">
+          <span class="nav-item-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+              <path d="M15 18H9"/>
+              <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+              <circle cx="17" cy="18" r="2"/>
+              <circle cx="7" cy="18" r="2"/>
+            </svg>
+            <span>Gestión de Proveedores</span>
+          </span>
+        </button>
+
+        <button type="button" class="nav-item" data-view="reportes">
+          <span class="nav-item-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" x2="8" y1="13" y2="13"/>
+              <line x1="16" x2="8" y1="17" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <span>Generación de Reportes</span>
+          </span>
+        </button>
+
+        <div class="nav-section-label" style="margin-top: 12px;">Administración</div>
+
+        <button type="button" class="nav-item" data-view="seguridad">
+          <span class="nav-item-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <rect width="8" height="5" x="8" y="11" rx="1"/>
+              <path d="M10 11V9a2 2 0 1 1 4 0v2"/>
+            </svg>
+            <span>Usuarios y Contraseñas</span>
+          </span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile-mini">
+          <div class="admin-avatar">AD</div>
+          <div class="admin-info">
+            <div class="admin-name">Administrador General</div>
+            <div class="admin-sub">Control y Acceso Total</div>
+          </div>
+        </div>
+        <a href="index.html" class="logout-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+          <span>Cerrar Sesión</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ======================================================================
+         ÁREA DE CONTENIDO PRINCIPAL
+         ====================================================================== -->
+    <div class="main-area">
+      <!-- Barra Superior -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Abrir menú">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" x2="21" y1="6" y2="6"/>
+              <line x1="3" x2="21" y1="12" y2="12"/>
+              <line x1="3" x2="21" y1="18" y2="18"/>
+            </svg>
+          </button>
+          <div class="page-heading">
+            <h1 id="topbarTitle">Resumen General del Sistema</h1>
+            <p id="topbarSubtitle">Supervisión en tiempo real de inventario, ventas, proveedores y reportes.</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="company-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Refrigeración Rufo 1, C.A. • Cabimas</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenedor de Vistas Dinámicas -->
+      <main class="content-wrapper">
+
+        <!-- ==================================================================
+             VISTA 1: RESUMEN GENERAL (DASHBOARD)
+             ================================================================== -->
+        <section id="view-dashboard" class="module-view active">
+          <!-- KPIs Globales -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-label">Productos en Stock</span>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                    <path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>
+                  </svg>
+                </div>
+              </div>
+              <div id="kpiTotalUnits" class="kpi-value">0</div>
+              <div id="kpiTotalSkus" class="kpi-sub">0 productos registrados</div>
+            </div>
+
+            <div class="kpi-card kpi-warning">
+              <div class="kpi-top">
+                <span class="kpi-label">Alertas de Stock</span>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                    <line x1="12" x2="12" y1="9" y2="13"/>
+                    <line x1="12" x2="12.01" y1="17" y2="17"/>
+                  </svg>
+                </div>
+              </div>
+              <div id="kpiAlertsCount" class="kpi-value">0</div>
+              <div id="kpiOutCount" class="kpi-sub">Requieren reposición</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-label">Control de Ventas</span>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                  </svg>
+                </div>
+              </div>
+              <div id="kpiSalesUnits" class="kpi-value">0</div>
+              <div id="kpiSalesRevenue" class="kpi-sub">$0.00 en monto total</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="kpi-label">Proveedores y Compras</span>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+                    <path d="M15 18H9"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
+                  </svg>
+                </div>
+              </div>
+              <div id="kpiSuppliersCount" class="kpi-value">0</div>
+              <div id="kpiPurchasesUnits" class="kpi-sub">0 unidades de mercancía recibidas</div>
+            </div>
+          </div>
+
+          <!-- Banner Dinámico de Alertas de Agotado -->
+          <div id="dashboardAlertBanner" class="stock-alert-banner">
+            <div class="stock-alert-content">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                <line x1="12" x2="12" y1="9" y2="13"/>
+                <line x1="12" x2="12.01" y1="17" y2="17"/>
+              </svg>
+              <div class="stock-alert-text">
+                <h4 id="alertBannerTitle">Alerta de Control de Inventario</h4>
+                <p id="alertBannerDesc">Se han detectado repuestos agotados o por debajo del stock mínimo.</p>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" data-goto="inventario">
+              Ver en Inventario
+            </button>
+          </div>
+
+          <!-- Dos Columnas de Supervisión Rápida -->
+          <div class="two-col-grid">
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h2>Alertas de Stock y Agotados</h2>
+                  <p>Productos que requieren reposición a proveedores</p>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" data-goto="proveedores">
+                  Registrar Compra
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Nombre</th>
+                      <th>Cantidad / Mínimo</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboardAlertsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h2>Últimas Ventas Registradas</h2>
+                  <p>Salidas recientes de productos en mostrador</p>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" data-goto="ventas">
+                  Ver Todas
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th>Monto</th>
+                      <th>Fecha</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboardSalesTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VISTA 2: GESTIÓN DE INVENTARIO
+             ================================================================== -->
+        <section id="view-inventario" class="module-view">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h2>Listado de Productos en Inventario</h2>
+                <p>Seguimiento de existencias, precios, fechas de ingreso y alertas de agotado.</p>
+              </div>
+              <div class="panel-actions">
+                <button type="button" id="openNewProductModalBtn" class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
+                  </svg>
+                  Agregar Producto
+                </button>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                </svg>
+                <input
+                  type="text"
+                  id="inventorySearchInput"
+                  class="search-input"
+                  placeholder="Buscar por código, nombre o proveedor..."
+                />
+              </div>
+
+              <div class="filter-group">
+                <select id="inventoryCategoryFilter" class="select-input" aria-label="Filtrar por categoría">
+                  <option value="todas">Todas las categorías</option>
+                  <option value="Compresores">Compresores</option>
+                  <option value="Gases Refrigerantes">Gases Refrigerantes</option>
+                  <option value="Componentes Eléctricos">Componentes Eléctricos</option>
+                  <option value="Motores y Ventilación">Motores y Ventilación</option>
+                  <option value="Tuberías y Filtros">Tuberías y Filtros</option>
+                </select>
+
+                <button type="button" class="filter-pill-btn active" data-stock-filter="todos">Todos</button>
+                <button type="button" class="filter-pill-btn" data-stock-filter="disponibles">En Stock</button>
+                <button type="button" class="filter-pill-btn" data-stock-filter="bajo">Stock Bajo</button>
+                <button type="button" class="filter-pill-btn" data-stock-filter="agotados">Agotados</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>N°</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Cantidad</th>
+                    <th>Stock Mínimo</th>
+                    <th>Precio</th>
+                    <th>Fecha de Ingreso</th>
+                    <th>Proveedor</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VISTA 3: CONTROL DE VENTAS
+             ================================================================== -->
+        <section id="view-ventas" class="module-view">
+          <div class="three-col-grid">
+            <div class="kpi-card">
+              <span class="kpi-label">Total Unidades Vendidas</span>
+              <div id="salesViewTotalUnits" class="kpi-value">0</div>
+              <span class="kpi-sub">Descontadas automáticamente del stock</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Ventas Registradas</span>
+              <div id="salesViewCount" class="kpi-value">0</div>
+              <span class="kpi-sub">Operaciones procesadas</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Monto Total Acumulado</span>
+              <div id="salesViewTotalAmount" class="kpi-value">$0.00</div>
+              <span class="kpi-sub">Ingresos por productos vendidos</span>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h2>Control de Productos Vendidos</h2>
+                <p>Historial detallado de ventas registradas en el sistema.</p>
+              </div>
+              <div class="panel-actions">
+                <button type="button" id="openNewSaleModalBtn" class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
+                  </svg>
+                  Registrar Venta
+                </button>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                </svg>
+                <input
+                  type="text"
+                  id="salesSearchInput"
+                  class="search-input"
+                  placeholder="Buscar por producto o descripción..."
+                />
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>N°</th>
+                    <th>Fecha</th>
+                    <th>Producto</th>
+                    <th>Cantidad de Producto</th>
+                    <th>Monto</th>
+                    <th>Descripción</th>
+                    <th>Registrado Por</th>
+                  </tr>
+                </thead>
+                <tbody id="salesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VISTA 4: GESTIÓN DE PROVEEDORES Y COMPRAS
+             ================================================================== -->
+        <section id="view-proveedores" class="module-view">
+          <!-- Directorio de Proveedores -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h2>Directorio de Proveedores</h2>
+                <p>Datos de contacto y ubicación de proveedores registrados.</p>
+              </div>
+              <div class="panel-actions">
+                <button type="button" id="openNewSupplierModalBtn" class="btn btn-secondary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
+                  </svg>
+                  Nuevo Proveedor
+                </button>
+                <button type="button" id="openNewPurchaseModalBtn" class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                    <path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>
+                  </svg>
+                  Registrar Compra de Mercancía
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>N°</th>
+                    <th>RIF</th>
+                    <th>Nombre</th>
+                    <th>Ubicación</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="suppliersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Compras Realizadas -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h2>Compras Realizadas y Cantidad de Mercancía</h2>
+                <p>Historial de abastecimiento y recepción de repuestos.</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>N°</th>
+                    <th>Fecha de Compra</th>
+                    <th>Proveedor</th>
+                    <th>Producto</th>
+                    <th>Cantidad de Mercancía</th>
+                    <th>Monto de Compra</th>
+                  </tr>
+                </thead>
+                <tbody id="purchasesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VISTA 5: GENERACIÓN DE REPORTES
+             ================================================================== -->
+        <section id="view-reportes" class="module-view">
+          <div class="print-only-header">
+            <div>
+              <h2>REFRIGERACIÓN RUFO 1, C.A.</h2>
+              <p>Calle Brasil, Urb. Delicias Nuevas - Cabimas, Edo. Zulia</p>
+            </div>
+            <div style="text-align: right;">
+              <strong>Reporte Oficial del Sistema</strong>
+              <p id="printDateLabel"></p>
+            </div>
+          </div>
+
+          <div class="panel-card no-print">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h2>Generación de Reportes</h2>
+                <p>Seleccione el informe administrativo que desea consultar o imprimir.</p>
+              </div>
+              <div class="panel-actions">
+                <div class="report-tabs" role="tablist">
+                  <button type="button" class="report-tab-btn active" data-report="rep-inventario">
+                    Reporte de Inventario
+                  </button>
+                  <button type="button" class="report-tab-btn" data-report="rep-ventas">
+                    Reporte de Ventas (Más Vendidos)
+                  </button>
+                  <button type="button" class="report-tab-btn" data-report="rep-proveedores">
+                    Reporte de Proveedores
+                  </button>
+                </div>
+
+                <button type="button" id="printReportBtn" class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 6 2 18 2 18 9"/>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                    <rect width="12" height="8" x="6" y="14"/>
+                  </svg>
+                  Imprimir / Exportar PDF
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-REPORTE 1: INVENTARIO -->
+          <div id="rep-inventario" class="report-section active">
+            <div class="three-col-grid">
+              <div class="kpi-card">
+                <span class="kpi-label">Productos en Stock</span>
+                <div id="repInvInStockCount" class="kpi-value">0</div>
+                <span class="kpi-sub">Referencias disponibles</span>
+              </div>
+              <div class="kpi-card kpi-warning">
+                <span class="kpi-label">Productos Agotados</span>
+                <div id="repInvOutStockCount" class="kpi-value">0</div>
+                <span class="kpi-sub">Sin unidades en almacén</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Cantidad Total en Inventario</span>
+                <div id="repInvTotalUnits" class="kpi-value">0</div>
+                <span id="repInvTotalValue" class="kpi-sub">Valorizado en $0.00</span>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h2>Reporte de Inventario: Productos en Stock, Agotados y Cantidad</h2>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Nombre</th>
+                      <th>Categoría</th>
+                      <th>Fecha de Ingreso</th>
+                      <th>Cantidad</th>
+                      <th>Stock Mínimo</th>
+                      <th>Precio</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="repInventarioTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-REPORTE 2: VENTAS (Más Vendidos) -->
+          <div id="rep-ventas" class="report-section">
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h2>Productos Más Vendidos</h2>
+                  <p>Proporción de unidades vendidas por cada repuesto.</p>
+                </div>
+              </div>
+              <div id="topSellingRankingContainer" class="ranking-list"></div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h2>Resumen de Ventas por Producto</h2>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Posición</th>
+                      <th>Código</th>
+                      <th>Nombre</th>
+                      <th>Categoría</th>
+                      <th>Cantidad Vendida</th>
+                      <th>Monto Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="repVentasTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-REPORTE 3: PROVEEDORES -->
+          <div id="rep-proveedores" class="report-section">
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title-group">
+                  <h2>Reporte de Proveedores: Compras Realizadas y Cantidad de Mercancía</h2>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>RIF</th>
+                      <th>Nombre</th>
+                      <th>Ubicación</th>
+                      <th>Teléfono</th>
+                      <th>Correo</th>
+                      <th>Compras Realizadas</th>
+                      <th>Cantidad de Mercancía</th>
+                      <th>Monto Total de Compras</th>
+                    </tr>
+                  </thead>
+                  <tbody id="repProveedoresTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VISTA 6: USUARIOS Y CONTRASEÑAS
+             ================================================================== -->
+        <section id="view-seguridad" class="module-view">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <h2>Control de Usuarios y Contraseñas</h2>
+                <p>Gestión de cuentas de acceso al sistema exclusiva del Administrador.</p>
+              </div>
+              <div class="panel-actions">
+                <button type="button" id="openNewUserModalBtn" class="btn btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
+                  </svg>
+                  Nuevo Usuario
+                </button>
+                <button type="button" id="resetDemoDataBtn" class="btn btn-secondary">
+                  Restaurar Datos Iniciales
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>N°</th>
+                    <th>Nombre Completo</th>
+                    <th>Usuario</th>
+                    <th>Contraseña</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="securityUsersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 1: AGREGAR / EDITAR PRODUCTO
+       ======================================================================== -->
+  <div id="productModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="productModalTitle">Agregar Producto</h3>
+        <button type="button" class="modal-close-x" data-close-modal="productModal">&times;</button>
+      </div>
+      <form id="productForm">
+        <input type="hidden" id="prodIdInput" />
+        <div class="modal-body">
+          <div class="form-row-2">
+            <div class="field-group">
+              <label for="prodCodigo">Código</label>
+              <input type="text" id="prodCodigo" class="field-input mono" placeholder="REF-009" required />
+            </div>
+            <div class="field-group">
+              <label for="prodCategoria">Categoría</label>
+              <select id="prodCategoria" class="field-input" required>
+                <option value="Compresores">Compresores</option>
+                <option value="Gases Refrigerantes">Gases Refrigerantes</option>
+                <option value="Componentes Eléctricos">Componentes Eléctricos</option>
+                <option value="Motores y Ventilación">Motores y Ventilación</option>
+                <option value="Tuberías y Filtros">Tuberías y Filtros</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="prodNombre">Nombre del Producto</label>
+            <input type="text" id="prodNombre" class="field-input" placeholder="Ej. Compresor Embraco 1/4 HP" required />
+          </div>
+
+          <div class="form-row-2">
+            <div class="field-group">
+              <label for="prodCantidad">Cantidad</label>
+              <input type="number" id="prodCantidad" class="field-input" min="0" step="1" value="0" required />
+            </div>
+            <div class="field-group">
+              <label for="prodStockMinimo">Stock Mínimo</label>
+              <input type="number" id="prodStockMinimo" class="field-input" min="1" step="1" value="5" required />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field-group">
+              <label for="prodPrecio">Precio ($)</label>
+              <input type="number" id="prodPrecio" class="field-input" min="0.1" step="0.01" placeholder="0.00" required />
+            </div>
+            <div class="field-group">
+              <label for="prodFechaIngreso">Fecha de Ingreso</label>
+              <input type="date" id="prodFechaIngreso" class="field-input" required />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="prodIdProveedor">Proveedor</label>
+            <select id="prodIdProveedor" class="field-input" required></select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="productModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: REGISTRAR VENTA
+       ======================================================================== -->
+  <div id="saleModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Registrar Venta</h3>
+        <button type="button" class="modal-close-x" data-close-modal="saleModal">&times;</button>
+      </div>
+      <form id="saleForm">
+        <div class="modal-body">
+          <div class="field-group">
+            <label for="saleIdProducto">Producto</label>
+            <select id="saleIdProducto" class="field-input" required></select>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field-group">
+              <label for="saleCantidadProducto">Cantidad de Producto</label>
+              <input type="number" id="saleCantidadProducto" class="field-input" min="1" step="1" value="1" required />
+            </div>
+            <div class="field-group">
+              <label for="saleMonto">Monto ($)</label>
+              <input type="number" id="saleMonto" class="field-input mono" step="0.01" readonly required />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="saleDescripcion">Descripción</label>
+            <input type="text" id="saleDescripcion" class="field-input" placeholder="Ej. Venta al detal en mostrador" value="Venta al detal en mostrador" required />
+          </div>
+
+          <div class="field-group">
+            <label for="saleIdUsuario">Registrado Por</label>
+            <select id="saleIdUsuario" class="field-input" required></select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="saleModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Venta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: AGREGAR / EDITAR PROVEEDOR
+       ======================================================================== -->
+  <div id="supplierModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="supplierModalTitle">Registrar Proveedor</h3>
+        <button type="button" class="modal-close-x" data-close-modal="supplierModal">&times;</button>
+      </div>
+      <form id="supplierForm">
+        <input type="hidden" id="supIdInput" />
+        <div class="modal-body">
+          <div class="form-row-2">
+            <div class="field-group">
+              <label for="supRif">RIF</label>
+              <input type="text" id="supRif" class="field-input mono" placeholder="J-40123456-7" required />
+            </div>
+            <div class="field-group">
+              <label for="supTelefono">Teléfono</label>
+              <input type="text" id="supTelefono" class="field-input" placeholder="0414-6000000" required />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="supNombre">Nombre</label>
+            <input type="text" id="supNombre" class="field-input" placeholder="Ej. Distribuidora Frío Zulia, C.A." required />
+          </div>
+
+          <div class="field-group">
+            <label for="supUbicacion">Ubicación</label>
+            <input type="text" id="supUbicacion" class="field-input" placeholder="Ej. Cabimas, Edo. Zulia" required />
+          </div>
+
+          <div class="field-group">
+            <label for="supCorreo">Correo</label>
+            <input type="email" id="supCorreo" class="field-input" placeholder="contacto@proveedor.com" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="supplierModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Proveedor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 4: REGISTRAR COMPRA DE MERCANCÍA
+       ======================================================================== -->
+  <div id="purchaseModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Registrar Compra de Mercancía</h3>
+        <button type="button" class="modal-close-x" data-close-modal="purchaseModal">&times;</button>
+      </div>
+      <form id="purchaseForm">
+        <div class="modal-body">
+          <div class="field-group">
+            <label for="purFechaCompra">Fecha de Compra</label>
+            <input type="date" id="purFechaCompra" class="field-input" required />
+          </div>
+
+          <div class="field-group">
+            <label for="purIdProveedor">Proveedor</label>
+            <select id="purIdProveedor" class="field-input" required></select>
+          </div>
+
+          <div class="field-group">
+            <label for="purIdProducto">Producto</label>
+            <select id="purIdProducto" class="field-input" required></select>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field-group">
+              <label for="purCantidadMercancia">Cantidad de Mercancía</label>
+              <input type="number" id="purCantidadMercancia" class="field-input" min="1" step="1" value="10" required />
+            </div>
+            <div class="field-group">
+              <label for="purMontoCompra">Monto de Compra ($)</label>
+              <input type="number" id="purMontoCompra" class="field-input" min="1" step="0.01" placeholder="150.00" required />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="purchaseModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Compra</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 5: GESTIONAR USUARIO / CAMBIAR CONTRASEÑA
+       ======================================================================== -->
+  <div id="userModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="userModalTitle">Gestionar Usuario</h3>
+        <button type="button" class="modal-close-x" data-close-modal="userModal">&times;</button>
+      </div>
+      <form id="userForm">
+        <input type="hidden" id="userIdInput" />
+        <div class="modal-body">
+          <div class="field-group">
+            <label for="userNombreCompleto">Nombre Completo</label>
+            <input type="text" id="userNombreCompleto" class="field-input" placeholder="Ej. Carlos Pérez" required />
+          </div>
+
+          <div class="form-row-2">
+            <div class="field-group">
+              <label for="userUsuario">Usuario</label>
+              <input type="text" id="userUsuario" class="field-input mono" placeholder="ej. empleado2" required />
+            </div>
+            <div class="field-group">
+              <label for="userRol">Rol</label>
+              <select id="userRol" class="field-input" required>
+                <option value="empleado">Empleado</option>
+                <option value="administrador">Administrador</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="userContrasena">Contraseña</label>
+            <input type="text" id="userContrasena" class="field-input mono" placeholder="Ingrese la contraseña" required minlength="4" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="userModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notificación Toast -->
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+
+  <!-- Controlador Principal del Administrador -->
+  <script src="src/assets/js/admin.js"></script>
+</body>
+</html>
